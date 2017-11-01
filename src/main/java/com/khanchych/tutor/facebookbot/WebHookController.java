@@ -13,11 +13,12 @@ public class WebHookController {
 
     private final static String MODE_SUBSCRIBE = "subscribe";
 
-    @Value("facebook-bot.verify-token=")
+    @Value("${facebook-bot.verify-token}")
     private String VERIFY_TOKEN;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> onMessageSent(@RequestParam("hub.mode") String mode,
+    public ResponseEntity<?> onMessageSent(
+            @RequestParam("hub.mode") String mode,
             @RequestParam("hub.verify_token") String verify_token,
             @RequestParam("hub.challenge") String challenge) {
         String body = null;
