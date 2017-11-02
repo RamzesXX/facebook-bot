@@ -16,18 +16,24 @@ public class WebHookController {
     @Value("${facebook-bot.verify-token}")
     private String VERIFY_TOKEN;
 
-    @RequestMapping
-    public ResponseEntity<?> onMessageSent(
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> onSubscribe(
             @RequestParam("hub.mode") String mode,
             @RequestParam("hub.verify_token") String verify_token,
             @RequestParam("hub.challenge") String challenge) {
-        String body = null;
+        String answer = null;
 
         if (MODE_SUBSCRIBE.equals(mode) && VERIFY_TOKEN.equals(verify_token)) {
-            body = challenge;
+            answer = challenge;
         }
 
-        return ResponseEntity.ok().body(body);
+        return ResponseEntity.ok().body(answer);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> onMessage(String body) {
+
+        return ResponseEntity.ok().body(null);
     }
 }
 
