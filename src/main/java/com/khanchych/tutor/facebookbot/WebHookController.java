@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/webhook")
 public class WebHookController {
 
-    private final static String MODE_SUBSCRIBE = "subscribe";
+    public final static String MODE_SUBSCRIBE = "subscribe";
 
     @Value("${facebook-bot.verify-token}")
     private String VERIFY_TOKEN;
