@@ -16,7 +16,7 @@ public class WebHookController {
     @Value("${facebook-bot.verify-token}")
     private String VERIFY_TOKEN;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping
     public ResponseEntity<?> onMessageSent(
             @RequestParam("hub.mode") String mode,
             @RequestParam("hub.verify_token") String verify_token,
