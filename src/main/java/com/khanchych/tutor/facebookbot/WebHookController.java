@@ -33,7 +33,13 @@ public class WebHookController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> onMessage(String body) {
 
-        return ResponseEntity.ok().body(null);
+        if (body == "page") {
+            //body.entry.forEach
+            return ResponseEntity.ok().body("EVENT_RECEIVED");
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 }
 
