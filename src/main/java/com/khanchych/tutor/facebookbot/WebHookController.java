@@ -1,7 +1,12 @@
 package com.khanchych.tutor.facebookbot;
 
+import com.khanchych.tutor.facebookbot.messages.Entry;
+import com.khanchych.tutor.facebookbot.messages.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/webhook")
 public class WebHookController {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebHookController.class);
+
     public final static String MODE_SUBSCRIBE = "subscribe";
+    public static final String EVENT_RECEIVED = "EVENT_RECEIVED";
+    public static final String OBJECT_TYPE_PAGE = "page";
 
     @Value("${facebook-bot.verify-token}")
     private String VERIFY_TOKEN;
@@ -31,11 +40,12 @@ public class WebHookController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> onMessage(String body) {
-
-        if (body == "page") {
-            //body.entry.forEach
-            return ResponseEntity.ok().body("EVENT_RECEIVED");
+    public ResponseEntity<?> onMessage(@RequestBody Event event) {
+        if (OBJECT_TYPE_PAGE.equals(event.getObject())) {
+            for(Entry entry: event.getEntry()) {
+                logger.info(entry.getMessaging()[0].getMessage().getText());
+            }
+            return ResponseEntity.ok().body(EVENT_RECEIVED);
         }
 
         return ResponseEntity.notFound().build();
